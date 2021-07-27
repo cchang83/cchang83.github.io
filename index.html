@@ -24,7 +24,16 @@ var svg = d3.select("#my_dataviz")
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
-
+// tooltips
+var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+        console.log(d)
+        return d.condition + "<br>" + d.rate + "<strong>%:</strong>";
+    });
+svg.call(tip);    
+    
     
 // Parse the Data
 d3.csv("titanic_surv_general.csv", function(data) {
@@ -55,9 +64,7 @@ svg.append("text")
       .style("text-anchor", "middle")
       .text("% of passengers"); 
 
-// tooltips
 
-    
 // Bars
 svg.selectAll("mybar")
   .data(data)
