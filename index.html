@@ -68,8 +68,6 @@
                                 </button>
                                 <button id="genderButton" type="button" class="btn btn-primary active btn-sm">Gender
                                 </button>
-                                <button id="ageButton" type="button" class="btn btn-primary active btn-sm">Age
-                                </button>
                             </div>
                         </div>
                         <div class="row">
@@ -154,7 +152,6 @@
 
     // Possible parameter values (ordering matters!)
     const pclass_vals = ["1st", "2nd", "3rd"];
-    const age_vals = ["<14yrs", "<64yrs", ">64yrs"];
     const sex_vals = ["female", "male"];
     const def_vals = ["All"];
 
@@ -162,7 +159,6 @@
     // Ordering and naming matters (ordering as above, name as in the data-file)
     var survival_rates = {
         "pclass": [0.64, 0.44, 0.26],
-        "agegroup": [0.58, 0.41, 0.14],
         "sex": [0.75, 0.21]
     };
 
@@ -187,17 +183,6 @@
             data[i].start_coord = [start_x, start_y];
             data[i].end_coord = [end_x, end_y];
 
-            // Set an age group
-            var age = parseInt(data[i].age);
-            if (age < 14) {
-                data[i].agegroup = age_vals[0];
-            } else if (age < 64) {
-                data[i].agegroup = age_vals[1];
-            } else {
-                data[i].agegroup = age_vals[2];
-            }
-
-            i++;
         }
         ;
 
@@ -228,18 +213,6 @@
             ;
         };
 
-        var get_color_age = function (d, i) {
-            switch (d.agegroup) {
-                case age_vals[0]:
-                    return "#18f0ff";
-                case age_vals[1]:
-                    return "#ff48af";
-                default: // Senior
-                    return "#1c1d1c";
-            }
-            ;
-        };
-
         // Mapping from variable to color and description (for later legend drawing)
         var color_name_mapping = function (attName) {
             var result = [];
@@ -262,18 +235,6 @@
                         var tmp = {};
                         tmp[attName] = e;
                         var col = get_color_sex(tmp, 0);
-                        result.push(
-                            {
-                                "name": e,
-                                "color": col
-                            });
-                    });
-                    return result;
-                case "agegroup":
-                    age_vals.forEach(function (e) {
-                        var tmp = {};
-                        tmp[attName] = e;
-                        var col = get_color_age(tmp, 0);
                         result.push(
                             {
                                 "name": e,
@@ -372,9 +333,6 @@
                   circle_tooltip.transition()
                       .duration(400)
                       .style("opacity", circle_tooltip_opacity);
-                  circle_tooltip.html("Age: " + d.age + "</br>" + "Class: " + d.pclass + "</br>" + "Sex: " + d.sex)
-                      .style("left", (d3.event.pageX) + "px")
-                      .style("top", (d3.event.pageY - 28) + "px");
                 })
                 .on("mouseout", function(d, i) {
                     circle_tooltip.transition()
@@ -544,18 +502,6 @@
 
             draw_annotations(color_name_mapping("sex"), "sex", survival_rates);
         });
-
-        d3.select("#ageButton").on("click", function (d, i) {
-            get_color = get_color_age;
-
-            circles_all = svg.selectAll("circle");
-            replay_circles(circles_all);
-
-            draw_legend(color_name_mapping("agegroup"));
-
-            draw_annotations(color_name_mapping("agegroup"), "agegroup", survival_rates);
-        });
-
 
     });
 
