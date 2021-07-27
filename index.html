@@ -63,14 +63,7 @@ svg.selectAll("mybar")
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.rate); })
     .attr("fill", "#006699")
-    	.on("mousemove", function(d){
-            tooltip
-              .style("left", d3.event.pageX - 50 + "px")
-              .style("top", d3.event.pageY - 70 + "px")
-              .style("display", "inline-block")
-              .html((d.condition) + "<br>" + (d.rate) + "%");
-        })
-	.on("mouseout", function(d){ tooltip.style("display", "none");});
+
 })
     
 // Title
