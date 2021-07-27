@@ -1,3 +1,3 @@
-﻿condition,count,,
-survived,40.7,,
-casualty,59.2,,
+﻿condition,rate,count
+survived,40.7,283
+casualty,59.2,412
