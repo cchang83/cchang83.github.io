@@ -42,12 +42,13 @@ var svg = d3.select("#dataviz_buttonTriger")
 
 // Parse data
 d3.csv('titanic_surv_general.csv', function(data) {
+
 // X axis
 var x = d3.scaleBand()
   .range([ 0, width ])
   .domain(data.map(function(d) { return d.condition; }))
   .padding(0.2);
-svg2.append("g")
+svg.append("g")
   .attr("transform", "translate(0," + height + ")")
   .call(d3.axisBottom(x))
   .selectAll("text")
@@ -58,15 +59,15 @@ svg2.append("g")
 var y = d3.scaleLinear()
   .domain([0, 100])
   .range([ height, 0]);
-svg2.append("g")
+svg.append("g")
   .call(d3.axisLeft(y));
-svg2.append("text")
+svg.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - margin.left)
       .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("%"); 
+      .text("% of passengers"); 
 
 <!-- tooltips  
 var tip = d3.tip()
@@ -76,11 +77,11 @@ var tip = d3.tip()
         console.log(d)
         return d.condition + "<br><strong>Total:</strong>" + d.count + "<br>" + d.rate + "<strong>%</strong>";
     });
-svg2.call(tip);  
+svg.call(tip);  
 -->
  
 // Bars
-svg2.selectAll("mybar")
+svg.selectAll("mybar")
   .data(data)
   .enter()
   .append("rect")
@@ -90,18 +91,7 @@ svg2.selectAll("mybar")
     .attr("height", function(d) { return height - y(d.rate); })
     .attr("fill", "#006699")
       .on('mouseover', tip.show)
-      .on('mouseout', tip.hide)
-    
-})
-    
-// Title
-svg2.append("text")
-        .attr("x", (width / 2))             
-        .attr("y", 0 - (margin.top / 2))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "16px") 
-        .style("text-decoration", "underline")  
-        .text("Did 'Women and Children First' help survival chances?");   	
+      .on('mouseout', tip.hide)   
 }) // end parse data	
 	
 	
