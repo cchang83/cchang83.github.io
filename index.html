@@ -257,7 +257,7 @@ var tip = d3.tip()
     .html(function(d) {
         console.log(d)
         return d.class + "<br><strong>Total:</strong>" + d.count + "<br>" + d.rate + "<strong>%</strong>"
-		+ "<br><strong>Female Survival Rate:</strong>" + d.female_rate + "%" + "<br><strong>Male Survival Rate:</strong>" + d.male_rate + "%";
+		+ "<br><strong>Female Rate:</strong>" + d.female_rate + "%" + "<br><strong>Male Rate:</strong>" + d.male_rate + "%";
     });
 svg3.call(tip);  
 -->
