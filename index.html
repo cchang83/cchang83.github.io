@@ -14,7 +14,7 @@
 
 <button type="button" onclick="displayGeneral('titanic_surv_general.csv')">Overview</button>
 <button type="button" onclick="displayGender('surv_by_gender.csv')">By Gender</button>
-<button type="button" onclick="displayClass('surv_by_class.csv')">By Class</button>
+<button type="button" onclick="displayClass('class_survival.csv')">By Class</button>
 
 <!-- Create a div where the circle will take place -->
 <div id="dataviz_buttonTriger"></div>
@@ -121,6 +121,7 @@ var svg = d3.select("#dataviz_buttonTriger")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+
 // Parse the Data
 d3.csv(dataset, function(data) {
 
@@ -183,9 +184,10 @@ svg2.append("text")
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
         .style("text-decoration", "underline")  
-        .text("Titanic Survival by Gender");   	
+        .text("Titanic Survival by Gender");   
 }
 	
+
 
 
 <!-- DISPLAY CLASS DIV -->	
@@ -200,7 +202,8 @@ var svg = d3.select("#dataviz_buttonTriger")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-d3.csv(dataset, function(data) {
+// Parse the Data
+d3.csv("class_survival.csv", function(data) {
 
 // X axis
 var x = d3.scaleBand()
