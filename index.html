@@ -3,7 +3,7 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
-<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -57,13 +57,13 @@ svg.append("text")
 
 // tooltips
 var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    return "<strong>%:</strong> <span style='color:orange'>" + d.rate + "</span>";
-  })
-
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+        return "<strong>Name:</strong>" + d.key + "<br><strong>Value:</strong>" + d.value;
+    });
 svg.call(tip);
+    
     
 // Bars
 svg.selectAll("mybar")
