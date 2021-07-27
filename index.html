@@ -3,6 +3,7 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
@@ -24,6 +25,7 @@ var svg = d3.select("#my_dataviz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+    
 // Parse the Data
 d3.csv("titanic_surv_general.csv", function(data) {
 
@@ -52,6 +54,16 @@ svg.append("text")
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("% of passengers"); 
+
+// tooltips
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>%:</strong> <span style='color:orange'>" + d.rate + "</span>";
+  })
+
+svg.call(tip);
     
 // Bars
 svg.selectAll("mybar")
@@ -63,6 +75,8 @@ svg.selectAll("mybar")
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.rate); })
     .attr("fill", "#006699")
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
     
 })
     
