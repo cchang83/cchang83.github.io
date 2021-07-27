@@ -63,7 +63,7 @@ var tip = d3.tip()
         console.log(d)
         return "<strong>Name:</strong>" + d.condition + "<br><strong>Value:</strong>" + d.rate;
     });
-    
+svg.call(tip);    
     
 // Bars
 svg.selectAll("mybar")
