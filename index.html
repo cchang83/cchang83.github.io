@@ -26,86 +26,10 @@ var margin = {top: 30, right: 30, bottom: 70, left: 60},
     height = 400 - margin.top - margin.bottom;
 	
 
+
 	
 	
-<!-- DISPLAY OVERVIEW DIV -->	
-var displayGeneral = function(dataset) {
-// clear previous data to load new data
-//d3.selectAll("#dataviz_buttonTriger").remove();
-var svg = d3.select("#dataviz_buttonTriger")
-      .append("svg")	
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-// parse the data
-d3.csv(dataset, function(data) {
-
-// X axis
-var x = d3.scaleBand()
-  .range([ 0, width ])
-  .domain(data.map(function(d) { return d.condition; }))
-  .padding(0.2);
-svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x))
-  .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("text-anchor", "end");
-
-// Add Y axis
-var y = d3.scaleLinear()
-  .domain([0, 100])
-  .range([ height, 0]);
-svg.append("g")
-  .call(d3.axisLeft(y));
-svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("% of passengers"); 
-
-<!-- tooltips  
-var tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-        console.log(d)
-        return d.condition + "<br><strong>Total:</strong>" + d.count + "<br>" + d.rate + "<strong>%</strong>";
-    });
-svg.call(tip);  
--->
- 
-// Bars
-svg.selectAll("mybar")
-  .data(data)
-  .enter()
-  .append("rect")
-    .attr("x", function(d) { return x(d.condition); })
-    .attr("y", function(d) { return y(d.rate); })
-    .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.rate); })
-    .attr("fill", "#006699")
-      .on('mouseover', tip.show)
-      .on('mouseout', tip.hide)
-    
-})
-    
-// Title
-svg.append("text")
-        .attr("x", (width / 2))             
-        .attr("y", 0 - (margin.top / 2))
-        .attr("text-anchor", "middle")  
-        .style("font-size", "16px") 
-        .style("text-decoration", "underline")  
-        .text("Titanic Survival Overview");   
-}
-
-
+	
 
 
 
