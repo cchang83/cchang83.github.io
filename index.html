@@ -93,7 +93,9 @@ svg.selectAll("mybar")
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.rate); })
     .attr("fill", "#006699")
-
+      .on("mouseover", mouseover)
+      .on("mousemove", mousemove)
+      .on("mouseleave", mouseleave)
 })
     
 // Title
