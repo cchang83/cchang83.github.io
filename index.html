@@ -8,7 +8,11 @@
 <div id="my_dataviz"></div>
 
 <script>
-
+.bar:hover 
+{
+  fill: orangered ;
+}
+    
 // --------------------- general survival graph---------------------------
 // set the dimensions and margins of the graph
 var margin = {top: 30, right: 30, bottom: 70, left: 60},
@@ -59,9 +63,9 @@ svg.selectAll("mybar")
   .enter()
   .append("rect")
     .attr("x", function(d) { return x(d.condition); })
-    .attr("y", function(d) { return y(d.count); })
+    .attr("y", function(d) { return y(d.rate); })
     .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.count); })
+    .attr("height", function(d) { return height - y(d.rate); })
     .attr("fill", "#006699")
     
 })
