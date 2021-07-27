@@ -56,11 +56,13 @@ svg.append("text")
       .text("% of passengers"); 
 
 // tooltips
-var tooltip = d3.select("#my_dataviz")
-  .append("div")
-    .style("position", "absolute")
-    .style("visibility", "hidden")
-    .text("I'm a circle!");
+var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([-10, 0])
+    .html(function(d) {
+        console.log(d)
+        return "<strong>Name:</strong>" + d.condition + "<br><strong>Value:</strong>" + d.rate;
+    });
     
     
 // Bars
