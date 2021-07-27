@@ -45,12 +45,13 @@ var y = d3.scaleLinear()
   .range([ height, 0]);
 svg.append("g")
   .call(d3.axisLeft(y));
-svg.append('text')
-    .attr('x', -(height / 2) - margin)
-    .attr('y', margin / 2.4)
-    .attr('transform', 'rotate(-90)')
-    .attr('text-anchor', 'middle')
-    .text('% of passengers')
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0-margin.left)
+    .attr("x",0 - (h / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("% of passengers");  
     
 // Bars
 svg.selectAll("mybar")
