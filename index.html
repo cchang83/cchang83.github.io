@@ -7,9 +7,14 @@
 <link rel="stylesheet" href="//rawgithub.com/Caged/d3-tip/master/examples/example-styles.css">
 <!-- Create a div where the graph will take place -->
 <!-- <div id="my_dataviz"></div> -->
+<div id="welcome">
+	<h3>Today let's take a look at what factors contribute towards your chance of survival as a passenger aboard the RMS Titanic</h3>
+	<h3>Please, hover over charts for details.</h3>
+</div>
 
 <div id="overview_chart">
   <h3>Titanic Survival Overview</h3>
+	<h3>Overall, only about 40% of the passengers survived</h3>
 <script>  
 // --------------------- general survival graph---------------------------
 // set the dimensions and margins of the graph
@@ -107,6 +112,7 @@ svg.append("text")
 
 <div id="gender_chart">
   <h3>Titanic Survival by Gender</h3>
+	<h3>Did "women and children first" have an effect?</h3>
 <script>  
 // --------------------- gender graph---------------------------
 // set the dimensions and margins of the graph
@@ -199,6 +205,7 @@ svg2.append("text")
 
 <div id="class_chart">
   <h3>Titanic Survival by Class</h3>
+	<h3>Passenger gender definitely had a drastic effect. What about passenger class?</h3>
 <script>  
 // --------------------- class graph---------------------------
 // set the dimensions and margins of the graph
@@ -286,4 +293,11 @@ svg3.append("text")
         .style("text-decoration", "underline")  
         .text("Titanic Survival by Class");   
 </script>
+</div>
+
+<div id="Outro">
+  <h3>In summary:</h3>
+  <h3>Gender: extremely significant effect</h3>
+  <h3>Class: significant effect</h3>
+  <h3>Basically, if you were a 1st class female passenger your chances of survival were high. Even among 3rd passengers though, female survival rate is still a 50/50. But, if you were a 3rd class male passenger you probably are dead. (Sorry)</h3>
 </div>
