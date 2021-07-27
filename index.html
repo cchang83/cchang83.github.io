@@ -198,7 +198,7 @@ svg2.append("text")
 
 
 <div id="class_chart">
-  <h3>Titanic Survival by Class</h3>
+  <h3>Titanic Survival by Class fuck</h3>
 <script>  
 // --------------------- class graph---------------------------
 // set the dimensions and margins of the graph
@@ -253,12 +253,12 @@ svg3.append("text")
 var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
+    .style("opacity", 0.8)
     .html(function(d) {
         console.log(d)
         return d.class + "<br><strong>Total:</strong>" + d.count + "<br>" + d.rate + "<strong>%:</strong>"
 		+ "<br><strong>Female Survival Rate:</strong>" + d.female_rate + "%" + "<br><strong>Male Survival Rate:</strong>" + d.male_rate + "%";
-    })
-    .style({opacity: 1});
+    });
 svg3.call(tip);  
 -->
  
