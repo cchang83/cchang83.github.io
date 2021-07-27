@@ -1,229 +1,614 @@
 <!DOCTYPE html>
-<html>
-	<head>
-	  <meta charset="utf-8">
-	  <script src="https://d3js.org/d3.v3.min.js"></script>
-	  <script src="//cdnjs.cloudflare.com/ajax/libs/d3-legend/1.1.0/d3-legend.js"></script>
-	  <style> 
+<html lang="en">
+<head>
+    <title>Surviving Titanic</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-random.v1.min.js"></script>
 
-      .axis text {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 12pt;
-      }
-      .axis .label {
-        font-size: 20pt;
-      }
+    <!-- custom style for the tooltip -->
+    <style>
+        div.circle_tooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 35px;
+            padding: 2px;
+            font: 10px sans-serif;
+            border: 0px;
+            background: #6c757d;
+            border-radius: 6px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+<!-- Main HTML -->
+<div class="jumbotron text-center mb-2 py-2">
+    <h1>Surviving the RMS Titanic</h1>
+</div>
 
-      .axis path, .axis line {
-        fill: none;
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-	  
-	  .color-legend text {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 12pt;
-      }
-	  
-	  h2 {
-		text-indent: 80px;
-		font-family: 'Open Sans', sans-serif;
-	  }
-	  
-	  h5 {
-		text-indent: 110px;
-		font-family: 'Open Sans', sans-serif;
-	  }
+<div class="container">
+    <div class="row">
+        <div class="col-sm-10 mx-auto">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 mx-auto">
+                        <h4>Surviving the RMS Titanic sinking</h4>
+                    </div>
+                </div>
+                <div class="row pb-1 mb-1">
+                    <div class="col-sm-6">
+                        <p>The RMS Titanic sank in the early morning of 15 April 1912. It's sinking has become a
+                            cultural phenomenon and still today is often discussed. Besides the cultural influence it
+                            also led to changes in the maritime regulations since many casualties resulted from the
+                            lack of lifeboats, lax regulations and the unequal treatment of passengers.</p>
+                        <p>Using linear regression analysis, one can analyze a
+                            <a href="http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.html">dataset</a>
+                            containing the Titanic passengers (names removed), and their: survival-status, class, age,
+                            sex, number of siblings aboard, number of parents or children aboard. </p>
 
-	  div {
-		text-indent: 135px;
-		font-family: 'Open Sans', sans-serif;
-	  }
-	  </style>
-	</head>
-	<body>
-      <script type="text/javascript">
-		d3.select('body')
-		  .append('h2')
-		  .text("Titanic Passenger Outcomes")
-	   
-		d3.select('body')
-		  .append('h5')
-		  .text("(Scroll over bars for additional information)")
-		
-		var outerWidth = 500;
-        var outerHeight = 250;
-        var margin = { left: 90, top: 30, right: 120, bottom: 60 };
-        var barPadding = 0.2;
-		
-		var colorColumn = "Category";
-		var yColumn = "Count";
-		var xColumn = "Pclass";
-	    var layerColumn = colorColumn
-		
-	    var innerWidth  = outerWidth  - margin.left - margin.right;
-        var innerHeight = outerHeight - margin.top  - margin.bottom;
-		
-	    var svg = d3.select("body").append("svg")
-          .attr("width",  outerWidth)
-          .attr("height", outerHeight);
-        var g = svg.append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        
-		//Add axes and legend
-		var xAxisG = g.append("g")
-          .attr("class", "x axis")
-          .attr("transform", "translate(0," + innerHeight + ")");
-        var yAxisG = g.append("g")
-          .attr("class", "y axis");
-	    var colorLegendG = g.append("g")
-          .attr("class", "color-legend")
-          .attr("transform", "translate(25, 0)");
-		
-		
-	    var xScale = d3.scale.ordinal().rangeBands([0, innerWidth], barPadding);
-        var yScale = d3.scale.linear().range([innerHeight, 0]);
-        var colorScale = d3.scale.ordinal()
-		  .domain(['Male Casualty', 'Female Casualty', 'Male Survivor', 'Female Survivor'])
-		  .range(['darkblue', 'darkred', 'cornflowerblue', 'palevioletred']);  
+                    </div>
+                    <div class="col-sm-6">
+                        <img src="RMS_Titanic.jpg" class="rounded mx-auto img-fluid" alt="RMS Titanic"
+                             viewBox="0 0 200 150">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>A linear regression model fit by the author on that <a
+                                href="http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.html">dataset</a>
+                            was able to correctly predict the survival-status of passengers in a test-set with an
+                            misclassification-rate of 22%. Interestingly
+                            this
+                            model identified not all passenger attributes as being significant, but only the
+                            following:</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <ul class="list-group">
+                            <li class="list-group-item py-0 px-1"><b>Class:</b> most significant impact</li>
+                            <li class="list-group-item py-0 px-1"><b>Sex:</b> significant impact</li>
+                            <li class="list-group-item py-0 px-1"><b>Age in combination with sex:</b> significant impact</li>
+                        </ul>
+                        <p class="small">(since the linear regression analysis is not the focus of this page, no further details are given)</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p>Using the following animations you can explore the passenger survival status visually by
+                            yourself so to get a feeling and understanding of the impacts of the different passenger
+                            attributes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	    var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
-          .outerTickSize(0);
-   	    var yAxis = d3.svg.axis().scale(yScale).orient("left")
-		  .ticks(5)
-		  .outerTickSize(0);
+    <div class="row py-2 my-2">
+        <div class="col-sm-8 mx-auto">
+            <div class="card w-100 mx-auto shadow">
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-12 float-left">
+                                <p class="my-0 py-0">Show outcome and indicate:</p>
+                                <button id="allButton" type="button" class="btn btn-primary active btn-sm">No highlight
+                                </button>
+                                <button id="classButton" type="button" class="btn btn-primary active btn-sm">Class
+                                </button>
+                                <button id="genderButton" type="button" class="btn btn-primary active btn-sm">Gender
+                                </button>
+                                <button id="ageButton" type="button" class="btn btn-primary active btn-sm">Age
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 mx-auto">
+                                <svg id="overview_svg" class="mx-auto w-100" viewBox="0 0 200 150"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		
-		var colorLegend = d3.legend.color()
-			.scale(colorScale)
-			//.ascending(true)
-			.shapePadding(3)
-			.shapeWidth(15)
-			.shapeHeight(15)
-			.labelOffset(4);
-		
-		
-		// draw graph
-		function render(data){
-        
-			var nested = d3.nest()
-			  .key(function (d){ return d[layerColumn]; })
-			  .entries(data);
-			
-			var stack = d3.layout.stack()
-			  .y(function(d) { return d[yColumn]; })
-			  .values(function (d) { return d.values; });
-			  
-			var layers = stack(nested); 
-			
-			xScale.domain(layers[0].values.map(function (d){
-              return d[xColumn];
-            }));
 
-			yScale.domain([
-				0,
-				d3.max(layers, function (layer){
-				  return d3.max(layer.values, function (d){
-					return d.y0 + d.y;
-					});
-				})
-			]);
-			
-			colorScale.domain(layers.map(function (layer){
-			  return layer.key;
-			}));
+    <div class="row">
+        <div class="col-sm-10 mx-auto">
+            <hr/>
+        </div>
+    </div>
 
-			xAxisG.call(xAxis);
-			yAxisG.call(yAxis);
+    <div class="row">
+        <div class="col-sm-10 mx-auto">
+            <h4>Sources, purpose and motivation</h4>
+            <p>The purpose of this page is purely
+                educational as an example how to use narrative visualization (esp. martini glass structure) and <a
+                        href="https://d3js.org/">D3 js</a>
+                to implement it. </p><p>The linear regression analysis and the visualization were implemented based on the <a
+                        href="http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.html">Titanic dataset</a>
+                published by Frank E Harrell Jr.</p>
+            <p>Details about the RMS Titanic sinking were taken from <a href="https://en.wikipedia.org/wiki/Sinking_of_the_RMS_Titanic">Wikipedia</a>.</p>
+            <p>Author: <a href="mailto:trumpf.max@gmail.com">Maximilian Trumpf</a>.</p>
+        </div>
+    </div>
+</div>
+</div>
 
-			var layerGroups = g.selectAll(".layer").data(layers);
-			layerGroups.enter().append("g").attr("class", "layer");
-			layerGroups.exit().remove();
-			layerGroups.style("fill", function (d){
-			  return colorScale(d.key);
-			});
+<!-- JavaScript -->
+<!-- Bootstrap -->
+<script>
+    // Config
+    // SVG canvas
+    var svg_width = 200;
+    var svg_height = 150;
 
-			var bars = layerGroups.selectAll("rect").data(function (d){
-			  return d.values;
-			});
-			bars.enter()
-				.append("rect")
-				.on("mouseover", handleMouseOver)
-				.on("mouseout", handleMouseOut)
-			bars.exit().remove();
-			bars
-			  .attr("x", function (d){ return xScale(d[xColumn]); })
-			  .attr("y", function (d){ return yScale(d.y0 + d.y); })
-			  .attr("width", xScale.rangeBand())
-			  .attr("height", function (d){ return innerHeight - yScale(d.y); })
-			
-			colorLegendG.call(colorLegend);
-	    
-			//add axes labels
+    // Container
+    const all_container_x = 2;
+    const all_container_y = 15;
+    const all_container_margin_y = 10;
+    const all_container_width = 75;
+    const all_container_fill = "#f1f1f1";
+    const all_container_fill_opa = 0.9;
+    const all_container_stroke_with = 0.2;
+    const all_container_stroke_fill = "#9c9c9c"
 
-			svg.append("text")
-				.attr("class", "x label")
-				.attr("text-anchor", "middle")
-				.attr("x", 235)
-				.attr("y", 240)
-				.style("font-family", "sans-serif")
-				.text("Passenger Class");
- 
-			svg.append("text")
-				.attr("class", "y label")
-				.attr("text-anchor", "end")
-				.attr("y", 6)
-				.attr("dy", "2em")
-				.attr("transform", "rotate(-90)")
-				.style("font-family", "sans-serif")
-				.text("Number of Passengers");
-		
-			// Interactivity: define mouseover effects
-			function handleMouseOver(d, i) {  // Add interactivity
 
-				// Use D3 to select element, change color and size
-				d3.select(this).attr({
-				  fill: "orange"
-				});
-			
-				// Select the infobox, use .text to set the content
-				// d is the data point
-				d3.select(".infobox").style('visibility', 'visible');
-				d3.select(".infobox .Pclass").text(d['Pclass']);
-				d3.select(".infobox .Category").text(d['Category']);
-				d3.select(".infobox .Count").text(d['Count']);
-				d3.select(".infobox .Percent_Total").text(d['Percent_Total']);
-				d3.select(".infobox .Percent_Class").text(d['Percent_Class']);
-				d3.select(this)
-				  .transition()
-				  .duration(100);
-			}
-			
-			function handleMouseOut(d, i) {
-				// Use D3 to select element, change color back to normal
-				d3.select(this).attr({
-				  fill: function(d) {return colorScale(d.Category)}
-				})
+    const alive_container_height = 60;
+    const alive_container_width = 60;
+    const alive_container_x = svg_width - all_container_x - alive_container_width;
+    const alive_container_y = 15;
+    const alive_container_fill = "#f1f1f1";
+    const alive_container_fill_opa = 0.9;
+    const alive_container_stroke_with = 0.2;
+    const alive_container_stroke_fill = "#9c9c9c"
 
-				d3.select(".infobox").style('visibility', 'hidden');
-			}
-		}
 
-		function type(d){
-  		  d.Count = +d.Count;
-		  return d;
-		}
+    const dead_container_height = 60;
+    const dead_container_width = 60;
+    const dead_container_x = svg_width - all_container_x - dead_container_width;
+    const dead_container_y = all_container_y + (svg_height - all_container_margin_y * 2) - dead_container_height;
+    const dead_container_fill = "#f1f1f1";
+    const dead_container_fill_opa = 0.9;
+    const dead_container_stroke_with = 0.2;
+    const dead_container_stroke_fill = "#9c9c9c"
 
-		d3.csv("titanic_surv.csv", type, render);
-		
-	  </script>
-	  <div class="infobox" style = "visibility: hidden;">
-		<h4>Passenger Class: <strong class="Pclass"></strong></h3>
-		<h4 class="Category">Outcome</h4>
-		<p>Number of Passengers: <strong class="Count">N/A</strong></p>
-		<p>Percent of Total Passengers: <strong class="Percent_Total">%</strong></p>
-		<p>Percent of Class: <strong class="Percent_Class">%</strong></p>
-	  </div>
-	</body>
-	</head>
+    const container_cap_ymargin = 1;
+    const container_cap_fontsz = 4.5;
+
+    const legend_margin_x = 2;
+    const legend_margin_y = 7;
+    const legend_text_margins = 20;
+
+    const annotation_width = 35;
+    const annotation_text_height = 7;
+    const annotation_y_margin = 5;
+
+    // Circles
+    const circle_r = 1;
+    const circle_opacity = 0.65;
+    const circle_tooltip_opacity = 0.95;
+
+    // Transition
+    const mu = 6500;
+    const sigma = 500;
+
+    // Possible parameter values (ordering matters!)
+    const pclass_vals = ["1st", "2nd", "3rd"];
+    const age_vals = ["<14yrs", "<64yrs", ">64yrs"];
+    const sex_vals = ["female", "male"];
+    const def_vals = ["All"];
+
+    // Surivaval rates (used for annotation) (result from different analysis, we could also have counted here in JS)
+    // Ordering and naming matters (ordering as above, name as in the data-file)
+    var survival_rates = {
+        "pclass": [0.64, 0.44, 0.26],
+        "agegroup": [0.58, 0.41, 0.14],
+        "sex": [0.75, 0.21]
+    };
+
+    // load the data
+    d3.csv("ptitanic.csv").then(function (data) {
+        console.log(data);
+        // Iterate through all data points so to update some of their properties
+        var i = 0;
+        while (i < data.length) {
+            // Set their starting and ending position
+            var start_x = d3.randomUniform(all_container_x + circle_r, (all_container_x + all_container_width) - circle_r)();
+            var start_y = d3.randomUniform(all_container_y + circle_r, (all_container_y + svg_height - all_container_margin_y * 2) - circle_r)();
+
+            if (data[i].survived == "died") {
+                var end_x = d3.randomUniform(dead_container_x + circle_r, (dead_container_x + dead_container_width) - circle_r)();
+                var end_y = d3.randomUniform(dead_container_y + circle_r, (dead_container_y + dead_container_height) - circle_r)();
+            } else {
+                var end_x = d3.randomUniform(alive_container_x + circle_r, (alive_container_x + alive_container_width) - circle_r)();
+                var end_y = d3.randomUniform(alive_container_y + circle_r, (alive_container_y + alive_container_height) - circle_r)();
+            }
+            ;
+            data[i].start_coord = [start_x, start_y];
+            data[i].end_coord = [end_x, end_y];
+
+            // Set an age group
+            var age = parseInt(data[i].age);
+            if (age < 14) {
+                data[i].agegroup = age_vals[0];
+            } else if (age < 64) {
+                data[i].agegroup = age_vals[1];
+            } else {
+                data[i].agegroup = age_vals[2];
+            }
+
+            i++;
+        }
+        ;
+
+        // Set a color attribute for all circles based on the latest button click
+        var get_color_def = function (d, i) {
+            return "#404048";
+        };
+
+        var get_color_class = function (d, i) {
+            switch (d.pclass) {
+                case pclass_vals[0]:
+                    return "#ffd700";
+                case pclass_vals[1]:
+                    return "#d07805";
+                default:
+                    return "#a09565"
+            }
+            ;
+        };
+
+        var get_color_sex = function (d, i) {
+            switch (d.sex) {
+                case sex_vals[0]:
+                    return "#85ff2a";
+                default:
+                    return "#0f0ba0";
+            }
+            ;
+        };
+
+        var get_color_age = function (d, i) {
+            switch (d.agegroup) {
+                case age_vals[0]:
+                    return "#18f0ff";
+                case age_vals[1]:
+                    return "#ff48af";
+                default: // Senior
+                    return "#1c1d1c";
+            }
+            ;
+        };
+
+        // Mapping from variable to color and description (for later legend drawing)
+        var color_name_mapping = function (attName) {
+            var result = [];
+            switch (attName) {
+                case "pclass":
+                    pclass_vals.forEach(function (e) {
+                        var tmp = {};
+                        tmp[attName] = e;
+                        var col = get_color_class(tmp, 0)
+                        var survived_prop =
+                        result.push(
+                            {
+                                "name": e,
+                                "color": col
+                            });
+                    });
+                    return result;
+                case "sex":
+                    sex_vals.forEach(function (e) {
+                        var tmp = {};
+                        tmp[attName] = e;
+                        var col = get_color_sex(tmp, 0);
+                        result.push(
+                            {
+                                "name": e,
+                                "color": col
+                            });
+                    });
+                    return result;
+                case "agegroup":
+                    age_vals.forEach(function (e) {
+                        var tmp = {};
+                        tmp[attName] = e;
+                        var col = get_color_age(tmp, 0);
+                        result.push(
+                            {
+                                "name": e,
+                                "color": col
+                            });
+                    });
+                    return result;
+                default:
+                    var col = get_color_def(0, 0);
+                    return [{
+                        "name": def_vals,
+                        "color": col
+                    }
+                    ];
+            }
+            ;
+        };
+
+
+        // set default color function
+        var get_color = get_color_def;
+
+        // Prepare SVG and containers
+        var svg = d3.select("#overview_svg");
+
+        var all_container = svg.append("rect")
+            .attr("x", all_container_x)
+            .attr("y", all_container_y)
+            .attr("width", all_container_width)
+            .attr("height", svg_height - all_container_margin_y * 2)
+            .style("fill", all_container_fill)
+            .attr("fill-opacity", all_container_fill_opa)
+            .style("stroke-width", all_container_stroke_with)
+            .style("stroke", all_container_stroke_fill);
+
+        var all_container_txt = svg.append("text")
+            .attr("x", all_container_x)
+            .attr("y", all_container_y - container_cap_ymargin)
+            .text("All passengers")
+            .attr("font-size", container_cap_fontsz);
+
+        var alive_container = svg.append("rect")
+            .attr("x", alive_container_x)
+            .attr("y", alive_container_y)
+            .attr("width", alive_container_width)
+            .attr("height", alive_container_height)
+            .style("fill", alive_container_fill)
+            .attr("fill-opacity", alive_container_fill_opa)
+            .style("stroke-width", alive_container_stroke_with)
+            .style("stroke", alive_container_stroke_fill);
+
+        var alive_container_txt = svg.append("text")
+            .attr("x", alive_container_x)
+            .attr("y", alive_container_y - container_cap_ymargin)
+            .text("Survived")
+            .attr("font-size", container_cap_fontsz);
+
+        var dead_container = svg.append("rect")
+            .attr("x", dead_container_x)
+            .attr("y", dead_container_y)
+            .attr("width", dead_container_width)
+            .attr("height", dead_container_height)
+            .style("fill", dead_container_fill)
+            .attr("fill-opacity", dead_container_fill_opa)
+            .style("stroke-width", dead_container_stroke_with)
+            .style("stroke", dead_container_stroke_fill);
+
+        var alive_container_txt = svg.append("text")
+            .attr("x", dead_container_x)
+            .attr("y", dead_container_y - container_cap_ymargin)
+            .text("Dead")
+            .attr("font-size", container_cap_fontsz);
+
+        // Place a div for circle tooltips
+        var circle_tooltip = d3.select("body").append("div")
+            .attr("class", "circle_tooltip")
+            .style("opacity", 0);
+
+        // Place the starting circles
+        function set_circles(selection) {
+            return selection.data(data)
+                .enter()
+                .append("circle")
+                .attr("r", circle_r)
+
+                .attr("cx", function (d, i) {
+                    return d.start_coord[0];
+                })
+                .attr("cy", function (d, i) {
+                    return d.start_coord[1];
+                })
+                .style("fill", get_color)
+                .style("opacity", circle_opacity)
+                .on("mouseover", function(d, i) {
+
+                  circle_tooltip.transition()
+                      .duration(400)
+                      .style("opacity", circle_tooltip_opacity);
+                  circle_tooltip.html("Age: " + d.age + "</br>" + "Class: " + d.pclass + "</br>" + "Sex: " + d.sex)
+                      .style("left", (d3.event.pageX) + "px")
+                      .style("top", (d3.event.pageY - 28) + "px");
+                })
+                .on("mouseout", function(d, i) {
+                    circle_tooltip.transition()
+                        .duration(400)
+                        .style("opacity", 0);
+                });
+        };
+
+        // Update circles (after animation was running already)
+        function replay_circles(circles_all) {
+            // Remove and put new circles
+            circles_all.remove();
+            circles_all = svg.selectAll("circle");
+            circles_all = set_circles(circles_all);
+
+            // Start the transition
+            circles_all.transition()
+                .duration(d3.randomNormal(mu, sigma)) // pass the function (not the value), each function will be called for each element in data
+                .attr("cx", function (d, i) {
+                    return d.end_coord[0];
+                })
+                .attr("cy", function (d, i) {
+                    return d.end_coord[1];
+                });
+        };
+
+        // Draw the legend
+        function draw_legend(legend_spec) {
+            // Clean up
+            svg.select("g.legend").remove();
+
+            var legend_g = svg.append("g")
+                .attr("class", "legend")
+                .attr("transform", "translate(" + legend_margin_x + "," + legend_margin_y + ")");
+
+            legend_g.selectAll("circle")
+                .data(legend_spec)
+                .enter()
+                .append("circle")
+                .attr("cx", function (d, i) {
+                    return legend_text_margins * i;
+                })
+                .attr("cy", 0 - container_cap_fontsz / 4) // to account for the font-size
+                .attr("r", circle_r)
+                .attr("fill", function (d, i) {
+                    return d.color;
+                });
+
+            legend_g.selectAll("text")
+                .data(legend_spec)
+                .enter()
+                .append("text")
+                .attr("x", function (d, i) {
+                    return legend_text_margins * i + circle_r * 2;
+                })
+                .attr("y", 0)
+                .text(function (d, i) {
+                    return d.name;
+                })
+                .attr("font-size", container_cap_fontsz);
+
+        };
+
+        function draw_annotations(annotations, attribute_name, survival_rates) {
+            // Clean up
+            svg.selectAll("g.annotation").remove();
+
+            var annotation_g_alive = svg.append("g")
+                .attr("class", "annotation")
+                .attr("transform", "translate(" + (alive_container_x - annotation_width) + "," + alive_container_y + ")");
+
+            annotation_g_alive.selectAll("circle.alive_anno")
+                .data(annotations)
+                .enter()
+                .append("circle")
+                .attr("class", "alive_anno")
+                .attr("cx", 0)
+                .attr("cy", function (d, i) {
+                    return annotation_text_height * i + annotation_y_margin;
+                })
+                .attr("r", circle_r)
+                .attr("fill", function (d, i) {
+                    return d.color;
+                });
+
+            annotation_g_alive.selectAll("text.alive_anno")
+                .data(annotations)
+                .enter()
+                .append("text")
+                .attr("class", "alive_anno")
+                .attr("x", circle_r * 2 + 1)
+                .attr("y", function (d, i) {
+                    return annotation_text_height * i + circle_r + annotation_y_margin;
+                })
+                .text(function (d, i) {
+                    return (Math.round(parseFloat(survival_rates[attribute_name][i]) * 100) + "% survived");
+                })
+                .attr("font-size", container_cap_fontsz);
+
+            var annotation_g_alive = svg.append("g")
+                .attr("class", "annotation")
+                .attr("transform", "translate(" + (dead_container_x - annotation_width) + "," + dead_container_y + ")");
+
+            annotation_g_alive.selectAll("circle.dead_anno")
+                .data(annotations)
+                .enter()
+                .append("circle")
+                .attr("class", "dead_anno")
+                .attr("cx", 0)
+                .attr("cy", function (d, i) {
+                    return annotation_text_height * i + annotation_y_margin;
+                })
+                .attr("r", circle_r)
+                .attr("fill", function (d, i) {
+                    return d.color;
+                });
+
+            annotation_g_alive.selectAll("text.dead_anno")
+                .data(annotations)
+                .enter()
+                .append("text")
+                .attr("class", "dead_anno")
+                .attr("x", circle_r * 2 + 1)
+                .attr("y", function (d, i) {
+                    return annotation_text_height * i + circle_r + annotation_y_margin;
+                })
+                .text(function (d, i) {
+                    return ( Math.round((1 - parseFloat(survival_rates[attribute_name][i])) * 100) + "% died");
+                })
+                .attr("font-size", container_cap_fontsz);
+        };
+
+        var circles_all = svg.selectAll("circle");
+        circles_all = set_circles(circles_all);
+
+
+        // Register color change and transition for all circles
+        d3.select("#classButton").on("click", function (d, i) {
+            get_color = get_color_class;
+
+            circles_all = svg.selectAll("circle");
+            replay_circles(circles_all);
+
+            draw_legend(color_name_mapping("pclass"));
+
+            draw_annotations(color_name_mapping("pclass"), "pclass", survival_rates);
+        });
+
+        d3.select("#allButton").on("click", function (d, i) {
+            get_color = get_color_def;
+
+            circles_all = svg.selectAll("circle");
+            replay_circles(circles_all);
+
+            draw_legend(color_name_mapping("all"));
+
+            svg.selectAll("g.annotation").remove();
+        });
+
+        d3.select("#genderButton").on("click", function (d, i) {
+            get_color = get_color_sex;
+
+            circles_all = svg.selectAll("circle");
+            replay_circles(circles_all);
+
+            draw_legend(color_name_mapping("sex"));
+
+            draw_annotations(color_name_mapping("sex"), "sex", survival_rates);
+        });
+
+        d3.select("#ageButton").on("click", function (d, i) {
+            get_color = get_color_age;
+
+            circles_all = svg.selectAll("circle");
+            replay_circles(circles_all);
+
+            draw_legend(color_name_mapping("agegroup"));
+
+            draw_annotations(color_name_mapping("agegroup"), "agegroup", survival_rates);
+        });
+
+
+    });
+
+</script>
+
+</body>
 </html>
