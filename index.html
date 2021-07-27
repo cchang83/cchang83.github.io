@@ -6,6 +6,36 @@
 
 <!-- Create a div where the graph will take place -->
 <div id="my_dataviz"></div>
+#myTooltip {
+    position: absolute;
+    text-align: left;
+    width: 80px;
+    height: auto;
+    min-height: 20px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background-color: rgb(255, 255, 255);
+    border: 2px solid rgb(100, 161, 209);
+    color: #5E99BD;
+    border-radius: 8px 8px 8px 8px;
+    pointer-events: none;
+    padding: 11px;
+   }
+
+#myTooltip:before {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 18px;
+    width: 100%;
+    line-height: 1;
+    color: rgb(100, 161, 209);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+    top: 100%;
+    left: -2px;
+}
+
 
 <script>
     
@@ -54,33 +84,34 @@ svg.append("text")
       .text("% of passengers"); 
     
 // Create Tooltip
-  var tooltip = d3.select("#my_dataviz")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "1px")
-    .style("border-radius", "5px")
-    .style("padding", "10px")
+var tooplTipDiv = d3.select("body").append("div")   
+                .attr("id", "myTooltip")               
+                .style("opacity", 0);
 
-  // Three function that change the tooltip when user hover / move / leave a cell
-  var mouseover = function(d) {
-    var subgroupName = d3.select(this.parentNode).datum().key;
-    var subgroupValue = d.data[subgroupName];
-    tooltip
-        .html("subgroup: " + subgroupName + "<br>" + "Value: " + subgroupValue)
-        .style("opacity", 1)
-  }
-  var mousemove = function(d) {
-    tooltip
-      .style("left", (d3.mouse(this)[0]+90) + "px") // It is important to put the +90: other wise the tooltip is exactly where the point is an it creates a weird effect
-      .style("top", (d3.mouse(this)[1]) + "px")
-  }
-  var mouseleave = function(d) {
-    tooltip
-      .style("opacity", 0)
-  }
+// Three function that change the tooltip when user hover / move / leave a cell
+function onMouseOver(d){
+
+    var tooltipDiv = d3.select("#myTooltip"); 
+
+    tooltipDiv.transition()        
+       .duration(200)      
+       .style("opacity", 1);    
+
+    tooltipDiv.html( "your Content")
+       .style("left", (parseFloat(widthScale(d))) + "px") 
+       .style("cursor", "pointer")
+       .style("top", function(d){
+           return d3.event.pageY - this.offsetHeight - 17  + "px"
+        })
+        .style("color", "#333333");        
+}
+
+function onMouseOut(d){
+    var tooltipDiv = d3.select("#myTooltip"); 
+    tooltipDiv.transition()        
+          .duration(500)      
+          .style("opacity", 0);  
+}
     
     
 // Bars
@@ -93,9 +124,8 @@ svg.selectAll("mybar")
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.rate); })
     .attr("fill", "#006699")
-      .on("mouseover", mouseover)
-      .on("mousemove", mousemove)
-      .on("mouseleave", mouseleave)
+    .on("mouseover", onMouseOver)                  
+    .on("mouseout", onMouseOut)
 })
     
 // Title
