@@ -15,6 +15,9 @@
   <h3>I am div 2</h3>
 <script>  
 // --------------------- general survival graph---------------------------
+var container = document.currentScript.parentNode;
+var svg = d3.select(container)
+      .append("svg");
 // set the dimensions and margins of the graph
 var margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
