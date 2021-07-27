@@ -30,7 +30,7 @@ var margin = {top: 30, right: 30, bottom: 70, left: 60},
 <!-- DISPLAY OVERVIEW DIV -->	
 var displayGeneral = function(dataset) {
 // clear previous data to load new data
-// d3.selectAll("#dataviz_buttonTriger").remove();
+d3.selectAll("#dataviz_buttonTriger").remove();
 var svg = d3.select("#dataviz_buttonTriger")
       .append("svg")	
     .attr("width", width + margin.left + margin.right)
