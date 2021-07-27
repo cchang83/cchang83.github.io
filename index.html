@@ -8,7 +8,7 @@
 <!-- Create a div where the graph will take place -->
 <!-- <div id="my_dataviz"></div> -->
 <div id="welcome">
-	<h3>Let's take a look at what factors contribute towards your chance of survival as a passenger aboard the RMS Titanic</h3>
+	<h3>Let's take a look at what factors contribute towards your chance of survival as a passenger aboard the RMS Titanic...</h3>
 	<h3>Please, hover over charts for details.</h3>
 </div>
 
@@ -25,12 +25,6 @@ var margin = {top: 30, right: 30, bottom: 70, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 	
-
-	
-<!-- DISPLAY OVERVIEW DIV -->	
-var displayGeneral = function(dataset) {
-// clear previous data to load new data
-d3.selectAll("svg > *").remove();
 var svg = d3.select("#dataviz_buttonTriger")
       .append("svg")	
     .attr("width", width + margin.left + margin.right)
@@ -38,6 +32,11 @@ var svg = d3.select("#dataviz_buttonTriger")
       .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+	
+<!-- DISPLAY OVERVIEW DIV -->	
+var displayGeneral = function(dataset) {
+// clear previous data to load new data
+d3.selectAll("svg > *").remove();
 
 // Parse data
 d3.csv(dataset, function(data) {
@@ -110,13 +109,6 @@ svg.append("text")
 var displayGender = function(dataset) {
 // clear previous data to load new data
 d3.selectAll("svg > *").remove();
-var svg = d3.select("#dataviz_buttonTriger")
-      .append("svg")	
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
 
 // Parse data
 d3.csv(dataset, function(data) {
@@ -189,13 +181,6 @@ svg.append("text")
 var displayClass = function(dataset) {
 // clear previous data to load new data
 d3.selectAll("svg > *").remove();
-var svg = d3.select("#dataviz_buttonTriger")
-      .append("svg")	
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
 
 // Parse the Data
 d3.csv(dataset, function(data) {
